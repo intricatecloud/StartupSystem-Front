@@ -26,7 +26,7 @@ class RouterComponent extends React.Component {
         <Router>
             <Switch>
               <Route exact path="/">
-                <One />
+                <SignInScreen />
               </Route>
               <Route path="/signup">
                 <SignInScreen/>

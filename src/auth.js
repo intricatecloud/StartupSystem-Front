@@ -2,6 +2,12 @@
 import firebase from "firebase";
 import StyledFirebaseAuth from 'react-firebaseui/StyledFirebaseAuth';
 import React from "react"
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link
+} from "react-router-dom";
 // If you are using v7 or any earlier version of the JS SDK, you should import firebase using namespace import
 // import * as firebase from "firebase/app"
 
@@ -67,6 +73,9 @@ class SignInScreen extends React.Component {
         <h1>My App</h1>
         <p>Welcome {firebase.auth().currentUser.displayName}! You are now signed-in!</p>
         <p>Your Email is {firebase.auth().currentUser.email}</p>
+        <div className="control">
+              <button onClick={() =>window.location.href='/converter'} className="button is-primary">Go</button>
+        </div>
         <a onClick={() => firebase.auth().signOut()}>Sign-out</a>
       </div>
     );
