@@ -44,11 +44,11 @@ class SignInScreen extends React.Component {
       signInSuccessWithAuthResult: () => false
     }
   };
-
   // Listen to the Firebase Auth state and set the local state.
   componentDidMount() {
     this.unregisterAuthObserver = firebase.auth().onAuthStateChanged(
         (user) => this.setState({isSignedIn: !!user})
+
     );
   }
   //Not sure why there are so many callables here....
@@ -82,6 +82,9 @@ class SignInScreen extends React.Component {
   }
 }
 
+
+
 // todo show name and email address
 export default SignInScreen;
+export let idToken = firebase.auth().onAuthStateChanged(()=>{firebase.auth().currentuser?.getIdToken()})
 

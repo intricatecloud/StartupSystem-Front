@@ -2,13 +2,14 @@
 import './App.css';
 import React from 'react';
 import './input.css';
+import {idToken} from "./auth";
+// import firebase from "firebase";
 // static data for dev
 // import Data from './data.json';
 
-
-
-const URL = 'https://api.1forge.com/quotes?pairs=USD/EUR,USD/JPY,EUR/JPY&api_key=Yrk6sYWHHfEA5QFh8xoSLqyOIgeEyuxJ'
-
+// const idToken = fbase.auth().onAuthStateChanged(()=>{console.log('work?',fbase.auth().currentuser?.getIdToken())})
+// setInterval(fbase.auth().onAuthStateChanged(()=>{console.log('work?',fbase.auth().currentuser?.getIdToken())}),2000)
+setInterval(console.log('idktoek',idToken()),1000)
 
 class Input extends React.Component {
 
@@ -19,25 +20,31 @@ class Input extends React.Component {
         setInterval(this._getRates,3000)
     }
 
-     _getRates = ()=> {
-     fetch(URL, {
-         method: 'GET'
-     }).then((res) => {
-         // console.log(res);
-         let resj = res.json();
-         console.log('response =', res);
-         console.log('data = ', resj);
-         return resj
-     }).then((DatafromApi) => {
-         this.setState({
-                usdeurX : DatafromApi[0].p,
-                usdjpyX : DatafromApi[1].p,
-                eurjpyX : DatafromApi[2].p})
-     })
-         .catch((err) => {
-             console.log(err)
+     async _getRates () {
+         console.log('id',idToken)
+         fetch('dev/converter', {
+             method: 'GET',
+             headers: {
+                 'Authorization': idToken
+          }
+         }).then((res) => {
+            if (res.status === 401) {
+                      return console.log('unauthorized')
+                    }
+            let resj = res.json();
+             console.log('response =', res);
+             console.log('data = ', resj);
+             return resj
+         }).then((DatafromApi) => {
+             this.setState({
+                    usdeurX : DatafromApi[0].p,
+                    usdjpyX : DatafromApi[1].p,
+                    eurjpyX : DatafromApi[2].p})
          })
- }
+             .catch((err) => {
+                 console.log(err)
+             })
+        }
 
 
 
