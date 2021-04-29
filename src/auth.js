@@ -86,5 +86,4 @@ class SignInScreen extends React.Component {
 
 // todo show name and email address
 export default SignInScreen;
-export let idToken = firebase.auth().onAuthStateChanged(()=>{firebase.auth().currentuser?.getIdToken()})
-
+export

@@ -2,30 +2,38 @@
 import './App.css';
 import React from 'react';
 import './input.css';
-import {idToken} from "./auth";
+// import {idToken} from "./auth";
 // import firebase from "firebase";
 // static data for dev
 // import Data from './data.json';
 
 // const idToken = fbase.auth().onAuthStateChanged(()=>{console.log('work?',fbase.auth().currentuser?.getIdToken())})
 // setInterval(fbase.auth().onAuthStateChanged(()=>{console.log('work?',fbase.auth().currentuser?.getIdToken())}),2000)
-setInterval(console.log('idktoek',idToken()),1000)
+// setInterval(console.log('idktoek',idToken()),1000)
 
 class Input extends React.Component {
 
 // SET INTERVAL THE BEST WAY TO DO IT? WEB HOOK?
 
+    constructor(props) {
+        super(props);
+        this.state = {
+
+        }
+    }
+
     componentDidMount(){
         this._getRates();
         setInterval(this._getRates,3000)
+        console.log('3',this.props)
     }
-
-     async _getRates () {
-         console.log('id',idToken)
+    //
+    _getRates () {
+         // console.log('id',idToken)
          fetch('dev/converter', {
              method: 'GET',
              headers: {
-                 'Authorization': idToken
+                 'Authorization': 0 //this.props.idToken
           }
          }).then((res) => {
             if (res.status === 401) {
@@ -48,12 +56,7 @@ class Input extends React.Component {
 
 
 
-    constructor(props) {
-        super(props);
-        this.state = {
 
-        }
-    }
 
     render () {
         let label = this.props.label;
@@ -148,6 +151,28 @@ class One extends React.Component {
     }
   }
 
+  save_to_wallet (vals) {
+      fetch('dev/save', {
+             method: 'POST',
+             body: vals,
+             headers: {
+                 'Authorization': this.props.idToken
+          }
+         }).then((res) => {
+            if (res.status === 401) {
+                      return console.log('unauthorized')
+                    }
+            let resj = res.json();
+             console.log('response =', res);
+             console.log('data = ', resj);
+             return resj
+         })
+             .catch((err) => {
+                 console.log(err)
+             })
+        }
+
+
   render() {
     return (
 
@@ -158,15 +183,27 @@ class One extends React.Component {
                 label={cur}
                 monies = {this.state.currentMonies}
                 lastChangedCurrency = {this.state.lastChangedCurrency}
-                onValueChange={this._handleUpdate}/>
+                onValueChange={this._handleUpdate}
+                idToken = {this.props.idToken}/>
             ))
           }
+
           <div className="control">
-              <button className="button is-primary">Save</button>
+              <button className="button is-primary" onClick={
+                  () => {
+                      let values = {};
+                      this.props.children.forEach((item) => {
+                          values[item.props.label] = item.props.value
+                        }
+                    )
+                }
+              }>Save</button>
           </div>
       </div>
     );
   }
+  // todo post function for save, add as onclick event callback...
+
 
   // handler function to pass in as onMoniesChange=
   // must update state
