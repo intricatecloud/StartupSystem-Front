@@ -33,7 +33,8 @@ class Input extends React.Component {
          fetch('dev/converter', {
              method: 'GET',
              headers: {
-                 'Authorization': 0 //this.props.idToken
+                 'Authorization': 0 //this.props.idToken THIS IS WHAT CAUSES THE CANNOT GET
+                 // PROPERTY OF UNDEFINED ERROR
           }
          }).then((res) => {
             if (res.status === 401) {
